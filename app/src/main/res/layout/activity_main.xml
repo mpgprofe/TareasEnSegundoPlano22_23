@@ -37,4 +37,45 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toEndOf="@+id/textViewCrono"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintGuide_begin="99dp" />
+
+    <Button
+        android:id="@+id/buttonStart2"
+        android:layout_width="135dp"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        app:layout_constraintEnd_toStartOf="@+id/textViewCrono2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
+
+    <TextView
+        android:id="@+id/textViewCrono2"
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:text="00:00"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@+id/buttonStart2"
+        app:layout_constraintEnd_toStartOf="@+id/buttonStop2"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/buttonStart2"
+        app:layout_constraintTop_toTopOf="@+id/buttonStart2" />
+
+    <Button
+        android:id="@+id/buttonStop2"
+        android:layout_width="136dp"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        app:layout_constraintBottom_toBottomOf="@+id/textViewCrono2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/textViewCrono2"
+        app:layout_constraintTop_toTopOf="@+id/textViewCrono2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,18 +2,22 @@ package com.example.tareasensegundoplano22_23;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 public class MainActivity extends AppCompatActivity {
-    Button buttonStart, buttonStop;
-    TextView textViewCrono;
+    Button buttonStart, buttonStop, buttonStart2, buttonStop2;
+    TextView textViewCrono, textViewCrono2;
     int contador=0;
     Thread hilo=null;
     boolean hiloActivo = true;
+    boolean crono2ON = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -22,6 +26,9 @@ public class MainActivity extends AppCompatActivity {
         buttonStart = findViewById(R.id.buttonStart);
         buttonStop = findViewById(R.id.buttonStop);
         textViewCrono = findViewById(R.id.textViewCrono);
+        buttonStart2 = findViewById(R.id.buttonStart2);
+        buttonStop2 = findViewById(R.id.buttonStop2);
+        textViewCrono2 = findViewById(R.id.textViewCrono2);
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 Log.d("CRONO", minutos + ":" + segundos);
                                 try {
-                                    Thread.sleep(1000);
+                                    Thread.sleep(100);
                                 } catch (InterruptedException e) {
                                     e.printStackTrace();
                                 }
@@ -57,8 +64,6 @@ public class MainActivity extends AppCompatActivity {
                     };
                     hilo.start();
                 }
-
-
             }
         });
         buttonStop.setOnClickListener(new View.OnClickListener() {
@@ -70,6 +75,52 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        buttonStart2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MiCronometro mc = new MiCronometro(0, textViewCrono2);
+                crono2ON = true;
+                mc.execute();
+            }
+        });
 
+        buttonStop2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                crono2ON = false;
+            }
+        });
+    }
+
+    private class MiCronometro extends AsyncTask<String, String, String>{
+        int miContador;
+        TextView miTextView;
+        MiCronometro(int inicio, TextView tv){
+            miContador = inicio;
+            miTextView = tv;
+
+        }
+        @Override
+        protected void onProgressUpdate(String... values) {
+            miTextView.setText(values[0]);
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            while(crono2ON){
+                int minutos = miContador /60;
+                int segundos = miContador %60;
+                String salida = String.format("%02d:%02d", minutos, segundos);
+                publishProgress(salida);
+                try {
+                    Thread.sleep(500);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                miContador++;
+            }
+            return null;
+
+        }
     }
 }
