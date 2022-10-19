@@ -7,13 +7,16 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
 
 public class MainActivity extends AppCompatActivity {
-    Button buttonStart, buttonStop, buttonStart2, buttonStop2;
+    Button buttonStart, buttonStop, buttonStart2, buttonStop2, buttonDescontar;
     TextView textViewCrono, textViewCrono2;
+    ProgressBar progressBar;
+
     int contador=0;
     Thread hilo=null;
     boolean hiloActivo = true;
@@ -29,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
         buttonStart2 = findViewById(R.id.buttonStart2);
         buttonStop2 = findViewById(R.id.buttonStop2);
         textViewCrono2 = findViewById(R.id.textViewCrono2);
+        progressBar = findViewById(R.id.progressBar);
+        buttonDescontar = findViewById(R.id.buttonDescontar);
 
         buttonStart.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,6 +95,13 @@ public class MainActivity extends AppCompatActivity {
                 crono2ON = false;
             }
         });
+        buttonDescontar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MiCuentaAtras cuentaAtras = new MiCuentaAtras(progressBar);
+                cuentaAtras.execute();
+            }
+        });
     }
 
     private class MiCronometro extends AsyncTask<String, String, String>{
@@ -123,4 +135,35 @@ public class MainActivity extends AppCompatActivity {
 
         }
     }
+
+    class MiCuentaAtras extends AsyncTask<String, String,String>{
+        ProgressBar miProgressBar;
+        MiCuentaAtras(ProgressBar pb){
+            miProgressBar = pb;
+        }
+
+        @Override
+        protected void onProgressUpdate(String... values) {
+            miProgressBar.setProgress(miProgressBar.getProgress()-1);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            buttonStart2.callOnClick();
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            while(miProgressBar.getProgress()>0){
+                publishProgress();
+                try{
+                    Thread.sleep(200);
+                }catch (InterruptedException e){
+                    e.printStackTrace();
+                }
+            }
+            return null;
+        }
+    }
+
 }
