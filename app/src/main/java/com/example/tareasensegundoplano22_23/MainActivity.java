@@ -99,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 MiCuentaAtras cuentaAtras = new MiCuentaAtras(progressBar);
-                cuentaAtras.execute();
+                //Así se ejecuta en serie: cuentaAtras.execute();
+                cuentaAtras.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
             }
         });
     }
@@ -149,6 +150,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
+
             buttonStart2.callOnClick();
         }
 
